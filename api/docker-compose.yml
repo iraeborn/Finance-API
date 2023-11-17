@@ -1,0 +1,53 @@
+version: "3.7"
+services:
+  app:
+    build:
+      args:
+        user: irae
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+    image: finance
+    container_name: finance-app
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www
+    networks:
+      - finance
+
+  db:
+    image: mysql:5.7
+    ports:
+        - "3308:3306"
+    container_name: finance-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_HOST: localhost
+      MYSQL_DATABASE: finance
+      MYSQL_ROOT_PASSWORD: financepass
+      MYSQL_PASSWORD: financepass
+      MYSQL_USER: financeuser
+      MYSQL_TCP_PORT: 3306
+
+    networks:
+      - finance
+
+  nginx:
+    image: nginx:alpine
+    container_name: finance-nginx
+    restart: unless-stopped
+    ports:
+      - 8000:80
+    volumes:
+      - ./:/var/www
+      - ./docker-compose/nginx:/etc/nginx/conf.d/
+    networks:
+      - finance
+
+networks:
+  finance:
+    driver: bridge
+volumes:
+  financemysql:
+    driver: local

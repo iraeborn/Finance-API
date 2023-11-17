@@ -1,0 +1,15 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class PaymentMethod extends Model
+{
+    protected $fillable = ['name', 'description'];
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+}
