@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use App\Models\TransactionCategory;
 use App\Models\User;
@@ -8,7 +8,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class Transaction extends Model
 {
-    protected $fillable = ['user_id', 'bank_account_id', 'amount', 'description', 'transaction_date'];
+    protected $primaryKey = 'id';
+    public $incrementing = false;
+    
+    protected $keyType = 'string';
+
+    protected $fillable = [
+        'id',
+        'user_id',
+        'bank_account_id',
+        'amount',
+        'description',
+        'transaction_date',
+        'transaction_type'
+    ];
 
     public function user()
     {

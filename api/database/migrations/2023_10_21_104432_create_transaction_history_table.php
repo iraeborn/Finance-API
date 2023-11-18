@@ -8,8 +8,8 @@ class CreateTransactionHistoryTable extends Migration
     public function up()
     {
         Schema::create('transaction_history', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('transaction_id');
+            $table->uuid('id')->primary();
+            $table->uuid('transaction_id');
             $table->decimal('balance', 10, 2);
             $table->timestamps();
 

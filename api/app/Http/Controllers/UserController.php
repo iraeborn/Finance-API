@@ -6,8 +6,13 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function get()
+    public function __construct()
     {
-        dd("get user");
+        $this->middleware('auth:api');
+    }
+
+    public function get(Request $request)
+    {
+        return [$request->user()];
     }
 }

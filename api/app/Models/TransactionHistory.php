@@ -1,12 +1,22 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 class TransactionHistory extends Model
 {
-    protected $fillable = ['transaction_id', 'status', 'description', 'created_at'];
+    protected $primaryKey = 'id';
+    public $incrementing = false;
+    
+    protected $keyType = 'string';
+    protected $fillable = [
+        'id',
+        'transaction_id',
+        'status',
+        'description',
+        'created_at'
+    ];
 
     public function transaction()
     {

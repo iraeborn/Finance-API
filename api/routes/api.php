@@ -15,17 +15,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::controller(AuthController::class)->group(function () {
-    Route::post('login', 'login');
-    Route::post('register', 'register');
-    Route::post('logout', 'logout');
-    Route::post('refresh', 'refresh');
+Route::post('logout', 'AuthController@logout');
+Route::post('register', 'AuthController@register');
+Route::post('login', 'AuthController@login');
+Route::post('refresh', 'AuthController@refresh');
 
-});
+Route::get('users', 'UserController@get');
 
-// Route::post('/login', 'AuthController@login');
-// Route::post('/register', 'AuthController@register');
-// Route::post('/logout', 'AuthController@logout')->middleware('auth:sanctum');
+Route::get('transactions', 'TransactionController@allTransactions');
+Route::get('/transaction/{transaction_id}', 'TransactionController@transactionsDetails');
+Route::post('transaction', 'TransactionController@newTransactions');
+Route::post('transaction-type', 'TransactionController@newTypeTransactions');
 
-// Route::get('users/{user}', 'UserController@get')->middleware('auth:sanctum');
+Route::post('bank', 'BankController@newBank');
+
+
 

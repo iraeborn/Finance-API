@@ -1,9 +1,14 @@
 <?php
+
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
+use Ramsey\Uuid\Nonstandard\Uuid;
 
 class AuthController extends Controller
 {
@@ -19,9 +24,11 @@ class AuthController extends Controller
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
+        
         $credentials = $request->only('email', 'password');
-
+        
         $token = Auth::attempt($credentials);
+
         if (!$token) {
             return response()->json([
                 'status' => 'error',
@@ -42,26 +49,30 @@ class AuthController extends Controller
     }
 
     public function register(Request $request){
+
+        
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
+            'name'      => 'required|string|max:255',
+            'email'     => 'required|string|email|max:255|unique:users',
+            'password'  => 'required|string',
         ]);
 
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'id'        => Uuid::uuid4()->toString(),
+            'name'      => $request->name,
+            'email'     => $request->email,
+            'password'  => Hash::make($request->password),
         ]);
 
         $token = Auth::login($user);
+
         return response()->json([
-            'status' => 'success',
-            'message' => 'User created successfully',
-            'user' => $user,
+            'status'    => 'success',
+            'message'   => 'User created successfully',
+            'user'      => $user,
             'authorisation' => [
-                'token' => $token,
-                'type' => 'bearer',
+                'token'     => $token,
+                'type'      => 'bearer',
             ]
         ]);
     }

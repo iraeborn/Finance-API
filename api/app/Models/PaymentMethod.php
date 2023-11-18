@@ -1,12 +1,20 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 class PaymentMethod extends Model
 {
-    protected $fillable = ['name', 'description'];
+    protected $primaryKey = 'id';
+    public $incrementing = false;
+    
+    protected $keyType = 'string';
+    protected $fillable = [
+        'id',
+        'name',
+        'description'
+    ];
 
     public function transactions()
     {
